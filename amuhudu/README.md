@@ -114,6 +114,23 @@ episode animation works unchanged. **Aru, Dev and Bujji stay procedural** — no
 free kid/dog scans exist. Skip the second command if you want the fully
 stylized cast back.
 
+### Adding the kids (RenderPeople, paid)
+
+RenderPeople sells children only as **posed** static scans (no rigged kids
+exist anywhere) — `build_scans.py` auto-rigs a standing posed scan with our
+skeleton, so they still walk/sit in episodes:
+
+1. Buy 2 × "Posed People New Gen" from the Children topic (~€39 each, pick
+   natural standing poses; all formats included → download FBX):
+   https://renderpeople.com/3d-people/ (filter: Children)
+2. Drop the FBX (+ its textures) into `assets/scans/aru/` and `assets/scans/dev/`
+3. Uncomment the two `POSED_SPECS` lines at the top of `build_scans.py`
+4. Rerun: `blender.exe --background characters/characters.blend --python characters/build_scans.py`
+   then `make_library.py` and the three episode builds
+
+Optional upgrades: rigged senior woman for Ammamma (~€79, Rigged filter →
+"Bestager" topic); Bujji the dog — RenderPeople has no animals, he stays stylized.
+
 To change a character (colors, hair, clothes), edit the `specs` list at the bottom of `build_characters.py` — e.g. change `shirt_c=(0.68, 0.12, 0.10)` for Aru's shirt color, or `hair_style="curls"` to `"cap"`, `"bun"`, `"long"`, `"short"`.
 
 ## Visual style (how the vibrant look is achieved)
