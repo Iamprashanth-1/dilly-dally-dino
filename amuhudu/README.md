@@ -20,9 +20,10 @@ amuhudu/
 ├── episodes/                  ← ANIMATED EPISODES (render-ready)
 │   ├── episode_lib.py         ← animation toolkit (walks, sits, shots, blinks, wags)
 │   ├── build_ep01.py / ep01.blend   ← "The Boy Who Talks to Hills" (~38s)
-│   └── build_ep02.py / ep02.blend   ← "The New Family" (~35s)
+│   ├── build_ep02.py / ep02.blend   ← "The New Family" (~35s)
+│   └── build_ep03.py / ep03.blend   ← "Seven Stones" (~40s)
 ├── audio/                     ← VO + music, mixed & timed to the episodes
-│   ├── ep1_mix.wav / ep2_mix.wav   ← ready-to-use soundtracks (also embedded in the blends)
+│   ├── ep1/2/3_mix.wav       ← ready-to-use soundtracks (also embedded in the blends)
 │   ├── VO_SCRIPT.md           ← timed scripts for recording the real kid VO
 │   └── make_audio.py          ← regenerates everything
 ├── story/
@@ -90,6 +91,7 @@ Add `--qc` to also render small preview stills into `previews/`.
 
 ## Rendering on the other laptop
 
+0. **⚠ Use Blender 5.x** (built and tested in 5.2.2). Opening these files in Blender 4.x or 3.x *will* break the characters (particle hair, materials and shape keys from 5.x don't survive older versions). Get the same version from blender.org — it's a free ~300 MB download.
 1. Open `characters.blend` in Blender 4.2+ (built in 5.2 — open it there first, `File → Save` if the other machine has an older version).
 2. For reels: `Output → Resolution` is already set to **1080×1920 @ 30 fps**.
 3. Engine: episode files default to **Cycles** (the lighting is tuned for it — richer, more natural color). If renders are too slow, switch to EEVEE in `Render Properties`, and drop `Light Threshold` to 0.05 to keep shadows clean.
@@ -102,7 +104,15 @@ Everything is procedural. To regenerate from scratch:
 
 ```
 blender.exe --background --factory-startup --python characters/build_characters.py -- --out characters/characters.blend
+blender.exe --background characters/characters.blend --python characters/build_scans.py
 ```
+
+The second step replaces the three **adults** (Ravi, Latha, Ammamma) with photoreal
+RenderPeople scan characters (free rigged samples, stored in `assets/scans/`).
+They are re-rigged to the same bone names (`thigh.L`, `upper_arm.L`, …) so every
+episode animation works unchanged. **Aru, Dev and Bujji stay procedural** — no
+free kid/dog scans exist. Skip the second command if you want the fully
+stylized cast back.
 
 To change a character (colors, hair, clothes), edit the `specs` list at the bottom of `build_characters.py` — e.g. change `shirt_c=(0.68, 0.12, 0.10)` for Aru's shirt color, or `hair_style="curls"` to `"cap"`, `"bun"`, `"long"`, `"short"`.
 

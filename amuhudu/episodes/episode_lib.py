@@ -213,6 +213,15 @@ def set_pose(rig, f, pose):
             pb.keyframe_insert('location', frame=f)
 
 
+def rest_pose(rig, f=1):
+    """Key all bones to rest at frame f — prevents backward extrapolation
+    of later pose keys into earlier frames."""
+    for pb in rig.pose.bones:
+        if pb.rotation_mode != 'XYZ':
+            pb.rotation_mode = 'XYZ'
+        pb.rotation_euler = (0, 0, 0)
+        pb.keyframe_insert('rotation_euler', frame=f)
+
 def put(rig, f, loc, rot_z=0.0):
     """Static placement keyframe (also used to hold a character off-stage)."""
     rig.location = loc
